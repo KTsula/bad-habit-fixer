@@ -28,10 +28,7 @@ jobs:
         run: npm ci
 
       - name: Build web app
-        run: npm run build
-        env:
-          # Vite base path for GitHub Pages subdirectory
-          BASE_URL: /bad-habit-fixer/app/
+        run: npx tsc -b && npx vite build --base /bad-habit-fixer/app/
 
       - name: Assemble site
         run: |

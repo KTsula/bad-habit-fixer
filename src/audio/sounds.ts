@@ -20,14 +20,19 @@ export interface SoundOption {
   file: string | null;
 }
 
+// Vite sets BASE_URL to '/' in dev/Tauri and to the configured `base` on
+// GitHub Pages (e.g. '/bad-habit-fixer/app/'). Prepending it ensures sound
+// file paths resolve correctly regardless of hosting location.
+const B = import.meta.env?.BASE_URL ?? '/';
+
 export const SOUND_OPTIONS: SoundOption[] = [
   { id: 'beep', label: 'Default beep', file: null },
-  { id: 'alert-1', label: 'Sound 1', file: '/sounds/alert-1.mp3' },
-  { id: 'alert-2', label: 'Stop! (firm)', file: '/sounds/alert-2.mp3' },
-  { id: 'alert-3', label: 'Stop (hesitant)', file: '/sounds/alert-3.mp3' },
-  { id: 'alert-4', label: 'Sound 4', file: '/sounds/faaaa.mp3' },
-  { id: 'alert-5', label: 'No! x5', file: '/sounds/freesound_community-no-x5-95904.mp3' },
-  { id: 'alert-6', label: 'Sound 6', file: '/sounds/untitled3_13.mp3' },
+  { id: 'alert-1', label: 'Sound 1', file: `${B}sounds/alert-1.mp3` },
+  { id: 'alert-2', label: 'Stop! (firm)', file: `${B}sounds/alert-2.mp3` },
+  { id: 'alert-3', label: 'Stop (hesitant)', file: `${B}sounds/alert-3.mp3` },
+  { id: 'alert-4', label: 'Sound 4', file: `${B}sounds/faaaa.mp3` },
+  { id: 'alert-5', label: 'No! x5', file: `${B}sounds/freesound_community-no-x5-95904.mp3` },
+  { id: 'alert-6', label: 'Sound 6', file: `${B}sounds/untitled3_13.mp3` },
 ];
 
 const STORAGE_KEY = 'bhf-sound';
