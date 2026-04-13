@@ -34,6 +34,7 @@ jobs:
         run: |
           mkdir -p _site/app
           cp docs/index.html _site/
+          cp docs/privacy.html _site/
           # Copy built web app (JS/CSS/HTML only, skip large mediapipe assets
           # since the browser version loads them from CDN)
           cp dist/index.html _site/app/
