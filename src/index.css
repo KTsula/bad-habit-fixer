@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Design tokens as CSS custom properties (per design.md §11 handoff checklist
+ * item 1). Tailwind config references the same raw values via semantic class
+ * names; this file is the source of truth for anything that needs a CSS var
+ * (e.g. inline style fallbacks, SVG fills, canvas draw colors).
+ */
+:root {
+  color-scheme: dark;
+
+  /* §2 Base palette */
+  --surface: #14110f;
+  --surface-elevated: #1e1a18;
+  --surface-sunken: #0e0c0b;
+  --border-subtle: #2a2522;
+  --border-strong: #3b3330;
+  --text: #f2ede9;
+  --text-muted: #a39891;
+  --text-faint: #6b625d;
+
+  /* §2 Accent */
+  --accent: #e87566;
+  --accent-strong: #d65a4a;
+  --accent-soft: #f2a093;
+  --accent-dim: #5a2e28;
+  --accent-ghost: rgba(232, 117, 102, 0.08);
+
+  /* §7.1 circle-error */
+  --circle-error-fill: #4a3330;
+
+  /* §6 Motion */
+  --ease-calm: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --duration-instant: 80ms;
+  --duration-short: 200ms;
+  --duration-medium: 450ms;
+  --duration-long: 900ms;
+  --duration-breath: 3200ms;
+}
+
+/*
+ * Font loading. design.md §3 requires Inter, self-hosted as woff2.
+ * We ship the app with a system-ui fallback stack (see tailwind.config.js
+ * fontFamily.sans) so the UI renders identically in visual weight/hierarchy
+ * until an Inter woff2 file is dropped into /public/fonts/inter.woff2.
+ *
+ * When the font file is added, un-comment the @font-face block below —
+ * no component changes needed.
+ */
+/*
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+*/
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family:
+    Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--surface);
+  color: var(--text);
+}
+
+/*
+ * §9 Accessibility: single consistent focus ring on :focus-visible.
+ * 2px solid accent-soft, 2px offset. Never remove this globally.
+ */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid var(--accent-soft);
+  outline-offset: 2px;
+  border-radius: inherit;
+}
+
+/*
+ * §6 Reduced motion fallback. Idle breathing is off; the component layer
+ * additionally short-circuits any state transition durations.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
