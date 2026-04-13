@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Bad Habit Fixer",
   "version": "0.1.0",
-  "identifier": "com.badhabitfixer.app",
+  "identifier": "com.badhabitfixer.desktop",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:5173",
