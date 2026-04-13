@@ -20,6 +20,7 @@ import { loadSoundId, saveSoundId, type SoundId } from './audio/sounds';
  * the breathing animation resumes cleanly.
  */
 const TRIGGER_ARC_MS = 1650;
+const IS_TAURI = '__TAURI_INTERNALS__' in window;
 
 /**
  * Main screen. Milestones 0–3:
@@ -86,7 +87,7 @@ export function App(): JSX.Element {
     setSessionCount((n) => {
       const next = n + 1;
       // Update the system tray tooltip when running inside Tauri.
-      if ('__TAURI_INTERNALS__' in window) {
+      if (IS_TAURI) {
         invoke('update_tray_state', { triggered: true, count: next }).catch(() => {});
       }
       return next;
@@ -143,6 +144,21 @@ export function App(): JSX.Element {
 
   return (
     <main className="relative min-h-screen w-full bg-surface text-text flex flex-col items-center px-space-6 pb-space-6">
+      {!IS_TAURI && (
+        <div className="w-full max-w-[520px] mt-space-4 px-space-4 py-space-3 rounded-lg bg-surface-raised border border-border-strong text-caption text-text-muted text-center leading-relaxed">
+          You're using the browser version. Detection <strong className="text-text">pauses when this tab
+          loses focus</strong>.{' '}
+          <a
+            href="https://github.com/KTsula/bad-habit-fixer/releases/latest"
+            className="text-accent hover:text-accent-strong underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Download the desktop app
+          </a>{' '}
+          for background monitoring.
+        </div>
+      )}
       <WebcamThumbnail
         ref={canvasRef}
         videoRef={videoRef}
