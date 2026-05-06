@@ -84,6 +84,7 @@ export function useLandmarkPipeline({
   if (triggerStateRef.current === null) {
     triggerStateRef.current = new TriggerState();
   }
+  const lastTimestampRef = useRef(0);
   // Habit config is read via ref so switching habits doesn't tear down
   // the landmarkers — only the comparison logic changes.
   const habitRef = useRef(habit);
@@ -120,6 +121,7 @@ export function useLandmarkPipeline({
     let cancelled = false;
     let rvfcHandle: number | null = null;
     setStatus('loading');
+    lastTimestampRef.current = 0;
 
     createLandmarkers()
       .then((lm) => {
@@ -199,12 +201,12 @@ export function useLandmarkPipeline({
       if (canvas.width !== vw) canvas.width = vw;
       if (canvas.height !== vh) canvas.height = vh;
 
-      // MediaPipe's VIDEO running-mode requires a monotonically-increasing
-      // timestamp. `metadata.mediaTime` is in seconds; we convert to ms.
-      // Fall back to performance.now() if mediaTime isn't present.
-      const timestamp = Math.round(
-        (metadata.mediaTime ?? now / 1000) * 1000
-      );
+      let timestamp = Math.round(now);
+      if (timestamp <= lastTimestampRef.current) {
+        timestamp = lastTimestampRef.current + 1;
+      }
+      lastTimestampRef.current = timestamp;
+      void metadata;
 
       let handResult: ReturnType<Landmarkers['hand']['detectForVideo']> | null = null;
       let faceResult: ReturnType<Landmarkers['face']['detectForVideo']> | null = null;
