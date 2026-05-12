@@ -4,5 +4,9 @@
 <dict>
     <key>NSCameraUsageDescription</key>
     <string>Bad Habit Fixer uses your camera to watch for the habit you're trying to break and play an alert when it sees it. Frames stay on your machine and are never uploaded.</string>
+    <key>NSSupportsAutomaticTermination</key>
+    <false/>
+    <key>NSSupportsSuddenTermination</key>
+    <false/>
 </dict>
 </plist>
